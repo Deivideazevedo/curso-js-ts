@@ -14,7 +14,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--primary-color);    
+<<<<<<< HEAD
     font-size: 1.2em;
+=======
+    font-size: 1.1em;
+>>>>>>> 5390ac37a8682b452b3178863f540395001665a4
     line-height: 1.5em; 
 }
 
@@ -59,6 +63,7 @@ form input:focus {
 }
 
 form button:hover {
+<<<<<<< HEAD
     border: 1px solid var(--primary-color-dark);
     background-color: var(--primary-color);
     color: var(--primary-color-dark);
@@ -80,4 +85,9 @@ form button:hover {
     background-color: aqua;
     padding: 5px 1px;
     margin-bottom: 0;
+=======
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--primary-color-dark);
+>>>>>>> 5390ac37a8682b452b3178863f540395001665a4
 }
