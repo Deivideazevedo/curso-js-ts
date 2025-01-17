@@ -40,11 +40,9 @@ form input {
 }
 
 form button {
-<<<<<<< HEAD
     border: 1px solid var(--primary-color);
-=======
     border: none;
->>>>>>> 5390ac37a8682b452b3178863f540395001665a4
+    border: none;
     border-radius: 5px;
     font-size: 24px;
     padding: 10px;
@@ -80,4 +78,7 @@ form button:hover {
     background-color: aqua;
     padding: 5px 1px;
     margin-bottom: 0;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--primary-color-dark);
 }
