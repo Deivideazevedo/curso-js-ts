@@ -43,5 +43,10 @@ console.log(
 );
 
 
+// DESESTRUTURAÇÃO
+const numeros = [100,200,300,400,500]
+const [primeiro,segundo, ...restoLista] = numeros
+console.log(primeiro,segundo,restoLista)
+
 
 

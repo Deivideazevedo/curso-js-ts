@@ -21,5 +21,22 @@ console.log(
 );
 
 
+const pessoa = {
+    nome: 'Luiz',
+    sobrenome: 'Miranda',
+    idade: 30,
+    endereco: {
+        rua: 'av brasil',
+        numero: 320
+    }
+};
 
+console.log ('\n',pessoa)
+
+// atribuição via desestruturação
+const {nome, sobrenome, ...resto} = pessoa;
+console.log(nome,sobrenome, resto,'\n')
+
+const { endereco: {rua, numero}, endereco } = pessoa;
+console.log(rua,numero, pessoa)
 
