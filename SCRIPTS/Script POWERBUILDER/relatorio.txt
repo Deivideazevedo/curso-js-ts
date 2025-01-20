@@ -1,0 +1,9 @@
+relatorio
+w_rlt_frq_pof
+
+Crédito SDO-Ronda
+Débito SDO-Ronda
+Crédito Ronda-SDO
+Débito Ronda-SDO
+Crédito Desconto Folha
+Débito Pagamento Folha

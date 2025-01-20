@@ -1,0 +1,3 @@
+22/07/2024 17:18:59 - Ocorreu um erro para a data escala: 27/06/2024, linha: 164703 - ERRO: "['idPonto'] not in index"
+24/07/2024 13:12:50 - Ocorreu um erro para a data escala: 27/06/2024, linha: 164703, - ERRO: "['idPonto'] not in index"
+26/07/2024 13:14:05 - Ocorreu um erro para a data escala: 19/06/2024, linha: 162501, - ERRO: "['idPonto'] not in index"

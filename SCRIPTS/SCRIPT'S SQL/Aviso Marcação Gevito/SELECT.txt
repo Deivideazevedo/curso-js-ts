@@ -1,0 +1,66 @@
+
+DECLARE @mar_dt_mov DATETIME = '01/11/2024';
+DECLARE @cd_emp INT = 10;
+
+--MOTORISTA
+SELECT 
+   DISTINCT ISNULL(mar.fnc_cd_funcionario,'') AS fnc_cd_funcionario , 
+   /*fnc.fnc_nm_funcionario,*/ 
+   ISNULL(crg.crg_nm_cargo,'') AS crg_nm_cargo,
+   ISNULL(esc.esc_cd_linha,'') AS esc_cd_linha, 
+   ISNULL(mar.mar_dt_mov,'') AS mar_dt_mov
+FROM mar_marcacao mar
+LEFT JOIN res_reserva res
+    ON res.res_cd_empresa = mar.fnc_cd_empresa
+    AND res.res_cd_motorista = mar.fnc_cd_funcionario
+    AND res.res_dt_inicio  <= @mar_dt_mov 
+    AND (res.res_dt_final  >= @mar_dt_mov OR res.res_dt_final IS NULL)
+LEFT JOIN esc_escala esc
+    ON esc.esc_cd_empresa = mar.fnc_cd_empresa
+    AND esc.esc_cd_motorista = mar.fnc_cd_funcionario
+    AND esc.esc_dt_escala =  mar.mar_dt_mov
+LEFT JOIN fnc_funcionario fnc
+    ON fnc.fnc_cd_empresa = mar.fnc_cd_empresa
+    AND fnc.fnc_cd_funcionario = mar.fnc_cd_funcionario
+LEFT JOIN crg_cargo crg
+    ON fnc.fnc_cd_cargo = crg.crg_cd_cargo
+WHERE
+	mar.fnc_cd_empresa = @cd_emp
+    AND mar.mar_dt_mov = @mar_dt_mov
+    AND (esc.esc_cd_linha NOT LIKE 'RES%' OR esc.esc_cd_linha IS NULL)
+    AND crg.crg_tp_cargo = 'M'
+    AND res.res_cd_motorista IS NULL
+    AND fnc.fnc_cd_garagem NOT IN (9,6,7)
+
+UNION ALL 
+
+-- COBRADOR
+SELECT
+   DISTINCT ISNULL(mar.fnc_cd_funcionario,'') AS fnc_cd_funcionario , 
+   /*fnc.fnc_nm_funcionario,*/ 
+   ISNULL(crg.crg_nm_cargo,'') AS crg_nm_cargo,
+   ISNULL(esc.esc_cd_linha,'') AS esc_cd_linha, 
+   ISNULL(mar.mar_dt_mov,'') AS mar_dt_mov
+FROM mar_marcacao mar
+LEFT JOIN res_reserva res
+    ON res.res_cd_empresa = mar.fnc_cd_empresa
+    AND res.res_cd_cobrador = mar.fnc_cd_funcionario
+    AND res.res_dt_inicio  <= @mar_dt_mov 
+    AND (res.res_dt_final  >= @mar_dt_mov OR res.res_dt_final IS NULL)
+LEFT JOIN esc_escala esc
+    ON esc.esc_cd_empresa = mar.fnc_cd_empresa
+    AND esc.esc_cd_cobrador = mar.fnc_cd_funcionario
+    AND esc.esc_cd_cobrador IS NOT NULL 
+    AND esc.esc_dt_escala =  mar.mar_dt_mov
+LEFT JOIN fnc_funcionario fnc
+    ON fnc.fnc_cd_empresa = mar.fnc_cd_empresa
+    AND fnc.fnc_cd_funcionario = mar.fnc_cd_funcionario
+LEFT JOIN crg_cargo crg
+    ON fnc.fnc_cd_cargo = crg.crg_cd_cargo
+WHERE
+	mar.fnc_cd_empresa = @cd_emp
+    AND mar.mar_dt_mov = @mar_dt_mov
+    AND (esc.esc_cd_linha NOT LIKE 'RES%' OR esc.esc_cd_linha IS NULL) 
+    AND crg.crg_tp_cargo = 'C'
+    AND res.res_cd_cobrador IS NULL
+    AND fnc.fnc_cd_garagem NOT IN (9,6,7)

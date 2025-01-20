@@ -1,0 +1,3 @@
+{"email": "plataforma@gopontoaponto.com.br","password": "102030"}
+{"email": "ln@gopontoaponto.com.br","password": "102030"}
+{"email": "exp@gopontoaponto.com.br","password": "102030"}

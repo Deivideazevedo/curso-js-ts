@@ -1,0 +1,5 @@
+Projeto escala novo: w_ope_prj_esc_pg
+filtro: w_ope_pmv_data
+
+esc_dt_escala	       esc_cd_linha	esc_nu_ordem_serv       esc_cd_veiculo	   esc_cd_motorista        cobrador
+30/09/2024 00:00:00	    1604	     080724	             303	    451                       1306
