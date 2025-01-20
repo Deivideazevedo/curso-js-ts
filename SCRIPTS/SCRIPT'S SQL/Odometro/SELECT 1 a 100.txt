@@ -1,0 +1,23 @@
+SELECT 	
+	odometro.cod_cd_empresa, 
+	odometro.cod_cd_garagem, 
+	odometro.cod_dt_movimento, 
+	odometro.cod_nu_catraca, 
+	odometro.cod_qt_ficha, 
+	odometro.cod_cd_veiculo, 
+	CASE
+    	WHEN veiculo.vcl_nu_ordem = '' OR veiculo.vcl_nu_ordem IS NULL 	THEN veiculo.vcl_nu_ordem_antigo
+    	ELSE veiculo.vcl_nu_ordem
+    END AS vcl_nu_ordem, 
+	veiculo.vcl_nu_placa,
+	odometro.cod_nu_odometro, 
+	odometro.cod_qt_quilometro
+FROM 
+	cod_catraca_odometro odometro 
+LEFT JOIN 
+	vcl_veiculo veiculo 
+	ON veiculo.vcl_cd_veiculo = odometro.cod_cd_veiculo 
+WHERE 
+	veiculo.vcl_cd_veiculo IN (55,44)
+ORDER BY cod_cd_veiculo ASC, odometro.cod_dt_movimento DESC
+

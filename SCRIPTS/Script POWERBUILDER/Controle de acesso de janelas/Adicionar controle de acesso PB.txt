@@ -1,0 +1,21 @@
+-> Adicionar controle de acesso para uma janela com opções internas:
+
+-> 1° Verificar a estrutura do banco e adicionar as opções, Ex:
+	SELECT *
+	FROM security_template
+	WHERE cod_estrutura LIKE '03.02.04%'
+	ORDER BY cod_estrutura
+
+	INSERT INTO dbo.security_template (application, window, control, description, object_type, status_log, cod_estrutura, 	cod_objeto) VALUES( 'a_sdo' , 'w_ope_tab_int', 'ddlb_tp_int.Ajuste_Banco_Ronda', '            Ajuste Banco Ronda' , 	'menuitem', 'S', '03.02.04.01', 'rep') GO
+
+-> 2° Inserir a inserção dessas opções no Dropdown no POSTOPEN da window (veja o arquivo postopen)
+
+-> 3° Inserir no PREOPEN essa linha de codigo, para permitir a verificação do acesso:
+	gnv_app.inv_security.of_setSecurity(this)	// ativa o serviço de segurança
+
+-> 4° Faça a verificação dos controles com base no acesso (geralmente existe uma função dentro da janela: of_ajusta_controles)
+
+-> 5° Forneça acesso ao usuário na janela de controle de acesso
+
+-> 6° Janela para exemplo: w_ope_tab_int
+

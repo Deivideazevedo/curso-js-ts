@@ -1,0 +1,120 @@
+SELECT 
+   isnull(fop.fnc_cd_funcionario, esc.esc_cd_cobrador) AS rod_registro_int,
+   crg.crg_nm_cargo,
+   fop.fop_hr_inicio_freq AS hora_inicio,
+   MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)) AS esc_hr_inicio,
+   dateadd(mi,abs(datediff(mi,fop.fop_hr_inicio_freq,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)))),0) AS dif_ini,
+   fop.fop_hr_fim_freq AS hora_fim,
+   MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim)) AS esc_hr_fim,
+   dateadd(mi,abs(datediff(mi,MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim)),fop.fop_hr_fim_freq)),0) dif_fim,
+   esc_dt_escala, 
+   esc_cd_cobrador AS cd_operador,
+	crg.crg_tp_cargo,
+	datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)), fop.fop_hr_inicio_freq) as ini,
+	datediff(mi,MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim)), fop.fop_hr_fim_freq) as fim,
+	isnull((datepart(hour, fop.fop_qt_hr_extra) * 60) + datepart(minute, fop.fop_qt_hr_extra),0) as fop_qt_hr_extra_min,
+	fop_qt_hr_extra,
+	dateadd(mi,datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))),0) esc_hr_total,
+	crg.crg_hr_horas_dia,
+	datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) AS esc_hr_tot_min,
+	datediff(mi,0,crg.crg_hr_horas_dia) AS crg_hr_horas_dia_min,
+	IIF( datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) - 
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		(datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) - 
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia)) , 0) AS esc_hr_extra_min ,
+	IIF( 
+		dateadd(mi,sum(datediff(mi,0,isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim) - isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio))),0) > crg.crg_hr_horas_dia,	 	  
+		dateadd(mi,sum(datediff(mi,0,isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim) - isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio))),0) - crg.crg_hr_horas_dia, 0) AS esc_hr_extra,
+   dateadd(mi,abs(datediff(mi,IIF( datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) -
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		dateadd(mi, datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) - 
+		(CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia),0), 0),fop_qt_hr_extra)),0) AS dif_hr_extra_fop_esc,
+	datediff(mi,IIF( datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) -
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		dateadd(mi, datediff(mi,MIN(isnull(esc.esc_hr_ini_cobrador, esc.esc_hr_inicio)),MAX(isnull(esc.esc_hr_fim_cobrador, esc.esc_hr_fim))) - 
+		(CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia),0), 0),fop_qt_hr_extra) AS dif_hr_extra_fop_esc_min
+      
+FROM esc_escala esc 
+LEFT JOIN fop_frequencia_operador fop
+	ON fop.fnc_cd_empresa = esc.esc_cd_empresa
+	AND fop.fop_dt_frequencia = esc.esc_dt_escala
+	AND fop.fnc_cd_funcionario = esc.esc_cd_cobrador
+LEFT JOIN fla_func_lotacao fla
+ON fla.fla_cd_empresa = fop.fnc_cd_empresa
+AND fla.fla_cd_funcionario = fop.fnc_cd_funcionario
+AND fla.fla_dt_final IS NULL 
+LEFT JOIN crg_cargo crg 
+ON crg.crg_cd_cargo = fla.fla_cd_cargo
+WHERE esc.esc_cd_empresa = :cd_emp
+AND esc.esc_dt_escala = :dt_ope
+AND esc.esc_cd_cobrador IS NOT NULL
+GROUP BY fop.fnc_cd_funcionario, crg.crg_nm_cargo, esc.esc_cd_cobrador, fop.fop_hr_inicio_freq, fop.fop_hr_fim_freq, esc_dt_escala,
+			crg.crg_tp_cargo, esc_nu_turno, fop.fop_qt_hr_extra, crg.crg_hr_horas_dia
+
+UNION ALL
+
+SELECT 
+   isnull(fop.fnc_cd_funcionario, esc.esc_cd_motorista) AS rod_registro_int,
+   crg.crg_nm_cargo,
+   fop.fop_hr_inicio_freq AS hora_inicio,
+   MIN(isnull(esc.esc_hr_inicio, esc.esc_hr_inicio)) AS esc_hr_inicio,
+   dateadd(mi,abs(datediff(mi,fop.fop_hr_inicio_freq, MIN(esc.esc_hr_inicio))),0) AS dif_ini,
+   fop.fop_hr_fim_freq AS hora_fim,
+   MAX(esc.esc_hr_fim) AS esc_hr_fim,
+   dateadd(mi,abs(datediff(mi,MIN(esc.esc_hr_fim), fop.fop_hr_fim_freq)),0) dif_fim,
+   esc.esc_dt_escala, 
+   esc.esc_cd_motorista AS cd_operador,
+	crg.crg_tp_cargo,
+	datediff(mi, MIN(esc.esc_hr_inicio), fop.fop_hr_inicio_freq) as ini,
+	datediff(mi, MAX(esc.esc_hr_fim), fop.fop_hr_fim_freq) as fim,
+	isnull((datepart(hour, fop.fop_qt_hr_extra) * 60) + datepart(minute, fop.fop_qt_hr_extra),0) as fop_qt_hr_extra_min,
+   fop_qt_hr_extra,
+	dateadd(mi,datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)),0) esc_hr_total,
+	crg.crg_hr_horas_dia,
+	datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)) AS esc_hr_tot_min,
+	datediff(mi,0,crg.crg_hr_horas_dia) AS crg_hr_horas_dia_min,
+	IIF( datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)) - 
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		(datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)) - 
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia)) , 0) AS esc_hr_extra_min ,
+	IIF( 
+		dateadd(mi,sum(datediff(mi,0,esc.esc_hr_fim -  esc.esc_hr_inicio)),0) > crg.crg_hr_horas_dia,	 	  
+		dateadd(mi,sum(datediff(mi,0,esc.esc_hr_fim -  esc.esc_hr_inicio)),0) - crg.crg_hr_horas_dia, 0) AS esc_hr_extra, 
+	
+	 dateadd(mi,abs(datediff(mi,IIF( datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)) -
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		dateadd(mi, datediff(mi, MIN(esc.esc_hr_inicio),MAX(esc.esc_hr_fim)) - 
+		(CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia),0), 0),fop_qt_hr_extra)),0) AS dif_hr_extra_fop_esc,
+	datediff(mi,IIF( datediff(mi,MIN(esc.esc_hr_inicio), MAX(esc.esc_hr_fim)) -
+		 (CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) > datediff(mi,0,crg.crg_hr_horas_dia),
+		dateadd(mi, datediff(mi,MIN(esc.esc_hr_inicio),MAX(esc.esc_hr_fim)) - 
+		(CASE WHEN datepart(hour,crg.crg_hr_horas_dia) >= 7 THEN 20
+		 	  WHEN datepart(hour,crg.crg_hr_horas_dia) < 7 THEN 10 END) - datediff(mi,0,crg.crg_hr_horas_dia),0), 0),fop_qt_hr_extra) AS dif_hr_extra_fop_esc_min
+     
+FROM esc_escala esc 
+LEFT JOIN fop_frequencia_operador fop
+	ON fop.fnc_cd_empresa = esc.esc_cd_empresa
+	AND fop.fop_dt_frequencia = esc.esc_dt_escala
+	AND fop.fnc_cd_funcionario = esc.esc_cd_motorista
+LEFT JOIN fla_func_lotacao fla
+ON fla.fla_cd_empresa = fop.fnc_cd_empresa
+AND fla.fla_cd_funcionario = fop.fnc_cd_funcionario
+AND fla.fla_dt_final IS NULL 
+LEFT JOIN crg_cargo crg 
+ON crg.crg_cd_cargo = fla.fla_cd_cargo
+WHERE esc.esc_cd_empresa = :cd_emp
+AND esc.esc_dt_escala = :dt_ope
+AND esc.esc_cd_motorista IS NOT NULL
+GROUP BY fop.fnc_cd_funcionario, crg.crg_nm_cargo, esc.esc_cd_motorista, fop.fop_hr_inicio_freq, fop.fop_hr_fim_freq, esc_dt_escala,
+			crg.crg_tp_cargo, fop.fop_qt_hr_extra, crg.crg_hr_horas_dia

@@ -1,0 +1,7 @@
+Procedures Criadas
+
+Envio de email de operadores irregulares na marcação
+ * EXEC sp_sdo_alerta_mar_gevito 10, '02/11/2024'
+
+carregar deletar e carregar programação na prefeitura
+ * sp_gps_prog_dlt_ins @programacao
