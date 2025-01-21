@@ -20,8 +20,18 @@ for (let chave in pessoa) {
 console.log("###########\nFOR OF")
 
 // FOR OF - Retona o valor (iteráveis, arrays ou string)
-const nome = 'Deivide'
+const nome = 'Deivide123'
 for (let valor of nome) {
+    
+    if (valor == 'v') {
+        console.log('Pulei o V');
+        continue;
+    }
+
+    if (valor == '1') {
+        console.log('Parando antes dos numeros');
+        break;
+    }
     console.log(valor); 
 }
 
