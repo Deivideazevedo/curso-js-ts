@@ -22,7 +22,7 @@
     false
     0
     '' "" `` (strings vazias)
-    null / umdefomed
+    null / undefined
     NaN
 */
 
