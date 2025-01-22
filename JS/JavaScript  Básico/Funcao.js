@@ -27,3 +27,14 @@ console.log(raiz(16))
 // Arrow function de uma linha
 const raiz3 = numero => numero ** 0.5
 console.log(raiz3(9))
+
+// Função anônima
+const intervalo = setInterval( function() {
+    console.log('Pritando a cada 1 segundo')
+}, 1000);
+
+// Arrow function anônima
+setTimeout(() => {
+    clearInterval(intervalo) ;
+    console.log('Encerrado após 5 segundos')
+ }, 5000);
