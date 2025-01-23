@@ -1,3 +1,0 @@
-producao_pla
-producao_ln
-producao_exp
