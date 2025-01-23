@@ -1,3 +1,0 @@
-banco_pla
-banco_ln
-banco_ex
