@@ -51,7 +51,18 @@ function criaCalculadora() {
             // console.log(naoContido.length)
 
             if (naoContido.length === 0) {
-                const conta = eval(valueDisplay);
+                try {
+                    const conta = eval(valueDisplay);
+
+                    if (!conta){
+                        alert('Conta inválida');
+                        return
+                    }
+                } catch (e) {
+                    alert('Conta inválida');
+                    return
+                }
+
                 this.display.value = String(conta);
             }else{
                 alert(`Conta Inválida, valores nao permitidos:\n${naoContido}`,);
